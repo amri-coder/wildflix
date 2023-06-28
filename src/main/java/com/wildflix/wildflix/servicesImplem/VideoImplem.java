@@ -33,4 +33,8 @@ public class VideoImplem implements VideoService{
 			return null;
 			}
 	}
+	@Override
+	public void deleteVideoById(Long id) {
+		videoRepository.deleteById(id);
+	}
 }
