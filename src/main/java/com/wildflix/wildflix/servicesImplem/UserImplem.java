@@ -3,6 +3,7 @@ package com.wildflix.wildflix.servicesImplem;
 import java.util.List;
 import java.util.Optional;
 
+import com.wildflix.wildflix.models.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,5 +32,25 @@ public class UserImplem implements UserService{
 			return user.get();
 		}else {
 		return null;}
+	}
+	@Override
+	public void deleteUserById(Long id) {
+		userRepository.deleteById(id);
+	}
+
+	@Override
+	public User modifyUserById(Long id, User newUser){
+
+		Optional<User> user = userRepository.findById(id);
+		if(user.isPresent()) {
+			user.get().setFirstname(newUser.getFirstname());
+			user.get().setLastname(newUser.getLastname());
+			user.get().setEmail(newUser.getEmail());
+			user.get().setPassword(newUser.getPassword());
+			user.get().setFavorite(newUser.getFavorite());
+			return user.get();
+		}else {
+			return null;
+		}
 	}
 }

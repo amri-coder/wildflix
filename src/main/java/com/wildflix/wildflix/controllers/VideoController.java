@@ -5,12 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.wildflix.wildflix.models.Video;
 import com.wildflix.wildflix.services.VideoService;
@@ -36,8 +31,8 @@ public class VideoController {
 	 * Show All Videos
 	 * @return
 	 */
-	@GetMapping("Videos")
-	public ResponseEntity<List<Video>> getAllVideo(){
+	@GetMapping("/videos")
+	public ResponseEntity<List<Video>> getAllVideos(){
 		return
 				new ResponseEntity<>(videoService.getAllVideos(), 
 						HttpStatus.OK);
@@ -47,7 +42,7 @@ public class VideoController {
 	 * @param id
 	 * @return
 	 */
-	@GetMapping("videos/{id}")
+	@GetMapping("/videos/{id}")
 	public ResponseEntity<Video> getVideoById(@PathVariable Long id){
 		Video result = videoService.getVideoById(id);
 		if(result != null) {
@@ -70,5 +65,16 @@ public class VideoController {
 		}else {
 			return ResponseEntity.notFound().build();
 		}		
+	}
+
+	@PutMapping("/videos/{id}")
+	public ResponseEntity<?> modifyVideoById(@PathVariable Long id){
+		Video video = videoService.getVideoById(id);
+		if(video !=null) {
+			videoService.modifyVideoById(id, video);
+			return ResponseEntity.ok().build();
+		}else {
+			return ResponseEntity.notFound().build();
+		}
 	}
 }
