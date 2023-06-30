@@ -10,5 +10,6 @@ public interface VideoService {
 	List<Video> getAllVideos(); 
 	Video getVideoById(Long id);
 	void deleteVideoById(Long id);
+	Video modifyVideoById(Long id, Video video);
 
 }

@@ -1,12 +1,13 @@
 package com.wildflix.wildflix.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -24,7 +25,18 @@ public class Video {
 	private String description;
 	
 	
-	private boolean isPrivate; 
+	private boolean isPrivate;
+	private Date releaseDate;
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+			name = "categories",
+			joinColumns = {
+					@JoinColumn(name = "video_id")
+			},inverseJoinColumns = {
+			@JoinColumn(name = "category_id")
+	})
+	private List<Category> categories = new ArrayList<>();
 	
 	
 	//l'url de la video "l'endroit où vous allez stocker la video"

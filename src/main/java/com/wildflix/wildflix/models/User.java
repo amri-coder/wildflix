@@ -1,13 +1,12 @@
 package com.wildflix.wildflix.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -26,5 +25,15 @@ public class User {
 	@Column(unique=true, nullable=false)
 	private String email;
 	private String password;
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+			name = "favorite",
+			joinColumns = {
+					@JoinColumn(name = "user_id")
+			},inverseJoinColumns = {
+			@JoinColumn(name = "video_id")
+	})
+	private List<Video> favorite = new ArrayList<>();
+
 
 }
