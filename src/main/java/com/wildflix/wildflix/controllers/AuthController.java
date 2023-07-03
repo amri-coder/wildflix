@@ -26,7 +26,7 @@ public class AuthController {
 
     @PostMapping("/sing-up-admin")
     public void createAdmin(@RequestBody User user){
-        user result = userService.createUser(user);
+        User result = userService.createUser(user);
         userService.addRoleToUser(result.getEmail(), RoleName.ADMIN);
     }
     @PostMapping("/login")
