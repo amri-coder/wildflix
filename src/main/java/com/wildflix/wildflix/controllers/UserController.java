@@ -1,11 +1,18 @@
 package com.wildflix.wildflix.controllers;
 
+import java.util.ArrayList;
+
+import java.util.Map;
 import java.util.List;
 
+import com.wildflix.wildflix.enums.RoleName;
 import com.wildflix.wildflix.models.Video;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import com.wildflix.wildflix.models.User;
@@ -20,7 +27,7 @@ public class UserController {
 	@PostMapping("/users")
 	public ResponseEntity<User> createUser(@RequestBody User user) {
 		return 
-				new ResponseEntity<>(userService.createUser(user),
+				new ResponseEntity<>(userService.createUser(user, RoleName.USER),
 						HttpStatus.CREATED);
 	}
 	@GetMapping("/users/{id}")
@@ -49,8 +56,8 @@ public class UserController {
 		}
 	}
 
-	@PutMapping("/users/{id}")
-	public ResponseEntity<?> modifyVideoById(@PathVariable Long id){
+	@PutMapping("/users")
+	public ResponseEntity<?> modifyUserById(@PathVariable Long id, Authentication authentication){
 		User user = userService.getUserById(id);
 		if(user !=null) {
 			userService.modifyUserById(id, user);
@@ -58,6 +65,20 @@ public class UserController {
 		}else {
 			return ResponseEntity.notFound().build();
 		}
+	}
+
+	@GetMapping("/users/getUserName")
+	public String getName (Authentication authentication){
+		return authentication.getName();
+	}
+
+	@GetMapping("/users/getRoles")
+	public List<String> getRoles(Authentication authentication){
+		List<String> roles = new ArrayList<>();
+		for (GrantedAuthority grantedAuthority :authentication.getAuthorities()){
+			roles.add(grantedAuthority.getAuthority());
+		}
+		return roles;
 	}
 
 }
