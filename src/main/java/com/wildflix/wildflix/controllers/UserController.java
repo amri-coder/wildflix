@@ -72,7 +72,7 @@ public class UserController {
 	}
 
 	@GetMapping("/users/getRoles")
-	public List<String> gettroles(Authentication authentication){
+	public List<String> getRoles(Authentication authentication){
 		List<String> roles = new ArrayList<>();
 		for (GrantedAuthority grantedAuthority :authentication.getAuthorities()){
 			roles.add(grantedAuthority.getAuthority());
