@@ -41,9 +41,11 @@ public class UserImplem implements UserService{
 
 	
 	@Override
-	public User createUser(User user) {
+	public User createUser(User user, RoleName role) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		return userRepository.save(user);
+		User result = userRepository.save(user);
+		addRoleToUser(result.getEmail(), role);
+		return result;
 	}
 	@Override
 	public List<User> getAllUsers(){
