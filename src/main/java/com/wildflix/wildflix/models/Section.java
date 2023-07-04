@@ -23,4 +23,5 @@ public class Section {
     private String title;
     private String description;
     private List<Video> videos = new ArrayList<>();
+
 }
