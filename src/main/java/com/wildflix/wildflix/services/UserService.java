@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import com.wildflix.wildflix.enums.RoleName;
+import com.wildflix.wildflix.exceptions.UserNotFound;
+import com.wildflix.wildflix.exceptions.VideoNotFoundException;
 import com.wildflix.wildflix.models.User;
+import com.wildflix.wildflix.models.Video;
 
 public interface UserService {
 
@@ -18,4 +21,8 @@ public interface UserService {
 
 	void addRoleToUser(String email, RoleName roleName);
 	String login (String email, String password);
+
+	// A vérifier avec billel pour les deux méthodes
+	List<Video> addVideoToFavorite(String email, Long idVideo) throws VideoNotFoundException, UserNotFound;
+	List<Video> removeVideoFromFavorite(String email, Long idVideo) throws UserNotFound, VideoNotFoundException;
 }
