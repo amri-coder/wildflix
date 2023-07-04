@@ -22,7 +22,7 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
                 .csrf()
@@ -34,14 +34,14 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests()
               //  .requestMatchers("/swagger-ui/**")
-                .anyRequest()
-                .permitAll()
-              //  .requestMatchers("/auth/**")
-             //   .permitAll()
-             //   .requestMatchers("/users/**")
-              //  .hasAuthority("ADMIN")
               //  .anyRequest()
-              //  .authenticated()
+              //  .permitAll()
+                .requestMatchers("/auth/**")
+                .permitAll()
+                .requestMatchers("/users/**")
+                .permitAll()
+                .anyRequest()
+               .authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
