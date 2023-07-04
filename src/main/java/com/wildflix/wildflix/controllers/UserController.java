@@ -56,8 +56,8 @@ public class UserController {
 		}
 	}
 
-	@PutMapping("/users")
-	public ResponseEntity<?> modifyUserById(@PathVariable Long id, Authentication authentication){
+	@PutMapping("/users/{id}")
+	public ResponseEntity<?> modifyUserById(@PathVariable Long id){
 		User user = userService.getUserById(id);
 		if(user !=null) {
 			userService.modifyUserById(id, user);
