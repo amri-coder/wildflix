@@ -1,12 +1,15 @@
 package com.wildflix.wildflix.servicesImplem;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import com.wildflix.wildflix.enums.RoleName;
+import com.wildflix.wildflix.exceptions.UserNotFound;
+import com.wildflix.wildflix.exceptions.VideoNotFoundException;
 import com.wildflix.wildflix.models.Category;
 import com.wildflix.wildflix.models.Role;
+import com.wildflix.wildflix.models.Video;
 import com.wildflix.wildflix.repository.RoleRepository;
+import com.wildflix.wildflix.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
@@ -31,6 +34,9 @@ public class UserImplem implements UserService{
 
 	@Autowired
 	RoleRepository roleRepository;
+
+	@Autowired
+	VideoRepository videoRepository;
 
 
 	@Autowired
@@ -71,6 +77,52 @@ public class UserImplem implements UserService{
 
 		if(role.isPresent() && user.isPresent()){
 			user.get().getRoles().add(role.get());
+		}
+	}
+
+
+	// A verifier Avec Billel
+	@Override
+	public List<Video> addVideoToFavorite(String email, Long videoId) throws VideoNotFoundException, UserNotFound {
+		Optional<User> user = userRepository.findByEmail(email);
+		Optional<Video> video = videoRepository.findById(videoId);
+		if(user.isEmpty())
+		{
+			// user not found
+			throw new UserNotFound();
+
+		}
+		else
+			if(video.isEmpty())
+			{
+				//video not found
+				throw new VideoNotFoundException();
+
+			}
+			else
+			{
+				user.get().getFavorite().add(video.get());
+				return user.get().getFavorite();
+			}
+	}
+
+	// A vérifier avec billel
+	@Override
+	public List<Video> removeVideoFromFavorite(String email, Long videoId) throws UserNotFound, VideoNotFoundException {
+		Optional<User> user = userRepository.findByEmail(email);
+		Optional<Video> video = videoRepository.findById(videoId);
+		if(user.isEmpty()){
+			throw new UserNotFound();
+		}
+		else{
+			if(video.isEmpty()){
+				throw new VideoNotFoundException();
+			}
+			else
+			{
+				user.get().getFavorite().remove(video.get());
+				return user.get().getFavorite();
+			}
 		}
 	}
 
