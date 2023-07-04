@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.List;
 
+import com.wildflix.wildflix.enums.RoleName;
 import com.wildflix.wildflix.models.Video;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class UserController {
 	@PostMapping("/users")
 	public ResponseEntity<User> createUser(@RequestBody User user) {
 		return 
-				new ResponseEntity<>(userService.createUser(user),
+				new ResponseEntity<>(userService.createUser(user, RoleName.USER),
 						HttpStatus.CREATED);
 	}
 	@GetMapping("/users/{id}")
@@ -55,8 +56,8 @@ public class UserController {
 		}
 	}
 
-	@PutMapping("/users/{id}")
-	public ResponseEntity<?> modifyVideoById(@PathVariable Long id){
+	@PutMapping("/users")
+	public ResponseEntity<?> modifyUserById(@PathVariable Long id, Authentication authentication){
 		User user = userService.getUserById(id);
 		if(user !=null) {
 			userService.modifyUserById(id, user);
@@ -72,7 +73,7 @@ public class UserController {
 	}
 
 	@GetMapping("/users/getRoles")
-	public List<String> gettroles(Authentication authentication){
+	public List<String> getRoles(Authentication authentication){
 		List<String> roles = new ArrayList<>();
 		for (GrantedAuthority grantedAuthority :authentication.getAuthorities()){
 			roles.add(grantedAuthority.getAuthority());

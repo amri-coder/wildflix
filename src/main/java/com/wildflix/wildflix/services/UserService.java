@@ -8,7 +8,7 @@ import com.wildflix.wildflix.models.User;
 
 public interface UserService {
 
-	User createUser(User user);
+	User createUser(User user, RoleName role);
 	List<User> getAllUsers(); 
 	User getUserById(Long id);
 	User modifyUserById(Long id, User user);

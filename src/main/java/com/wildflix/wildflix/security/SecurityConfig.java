@@ -22,7 +22,7 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
                 .csrf()
@@ -36,7 +36,8 @@ public class SecurityConfig {
                 .requestMatchers("/auth/**")
                 .permitAll()
                 .requestMatchers("/users/**")
-                .hasAuthority("ADMIN")
+                .permitAll()
+                //.hasAuthority("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()
