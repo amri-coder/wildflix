@@ -23,26 +23,27 @@ import com.wildflix.wildflix.services.UserService;
 
 @RestController
 public class UserController {
-	
+
 	@Autowired
 	UserService userService;
-	
+
 	@PostMapping("/users")
 	public ResponseEntity<User> createUser(@RequestBody User user) {
-		return 
+		return
 				new ResponseEntity<>(userService.createUser(user, RoleName.USER),
 						HttpStatus.CREATED);
 	}
+
 	@GetMapping("/users/{id}")
 	public ResponseEntity<User> getUserById(@PathVariable Long id){
 		User user = userService.getUserById(id);
 		if(user != null) {
-		return 
-				new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);}
-		else {
+			return
+					new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);} else {
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
 	}
+
 	@GetMapping("/users")
 	public ResponseEntity<List<User>> getAllUsers(){
 		return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
@@ -59,15 +60,15 @@ public class UserController {
 		}
 	}
 
-	@PutMapping("/users/{id}")
-	public ResponseEntity<?> modifyUserById(@PathVariable Long id){
-		User user = userService.getUserById(id);
-		if(user !=null) {
-			userService.modifyUserById(id, user);
+	// A vérifier avec Billel
+	@PutMapping("/users")
+	public ResponseEntity<?> modifyUserById(Authentication auth, @RequestBody User modifiedUser){
+		if( auth != null && auth.getPrincipal() instanceof User) {
+			userService.modifyUserById(((User)auth.getPrincipal()).getId(), modifiedUser);
 			return ResponseEntity.ok().build();
-		}else {
-			return ResponseEntity.notFound().build();
 		}
+
+		return ResponseEntity.notFound().build();
 	}
 
 	@GetMapping("/users/getUserName")
@@ -89,24 +90,21 @@ public class UserController {
 	public ResponseEntity<List<Video>> addVideoToFavorite(@RequestBody Map<String,Long> request, Authentication authentication){
 		try {
 			return new ResponseEntity<>(userService.addVideoToFavorite(authentication.getName(), request.get("idVideo")), HttpStatus.OK);
-		}
-		catch(VideoNotFoundException videoNotFoundException){
+		} catch(VideoNotFoundException videoNotFoundException){
 			return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
-		}
-		catch(UserNotFound userNotFound){
+		} catch(UserNotFound userNotFound){
 			return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
 		}
 	}
+
 	// A vérifier avec billel
 	@PostMapping("/users/removeVideoFromFavorite")
 	public ResponseEntity<List<Video>> removeVideoFromFavorite(@RequestBody Map<String, Long> request, Authentication authentication){
 		try {
 			return new ResponseEntity<>(userService.removeVideoFromFavorite(authentication.getName(), request.get("idVideo")), HttpStatus.OK);
-		}
-		catch(VideoNotFoundException videoNotFoundException){
+		} catch(VideoNotFoundException videoNotFoundException){
 			return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
-		}
-		catch(UserNotFound userNotFound){
+		} catch(UserNotFound userNotFound){
 			return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
 		}
 	}
