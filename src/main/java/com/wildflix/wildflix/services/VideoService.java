@@ -12,4 +12,7 @@ public interface VideoService {
 	void deleteVideoById(Long id);
 	Video modifyVideoById(Long id, Video video);
 
+	/*
+	List<Video> findByTitleContainingOrDescriptionContainingOrCategoriesContainingOrSectionsContaining(String searchTerm, String searchTerm1, String searchTerm2);
+	 */
 }

@@ -1,6 +1,7 @@
 package com.wildflix.wildflix.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -77,4 +78,11 @@ public class VideoController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+	/*
+	@PostMapping("/videos/search")
+	public List<Video> search(@RequestBody Map<String, String> body){
+		String searchTerm = body.get("text");
+		return videoService.findByTitleContainingOrDescriptionContainingOrCategoriesContainingOrSectionsContaining(searchTerm,searchTerm,searchTerm);
+	}
+	 */
 }

@@ -15,6 +15,8 @@ public interface VideoRepository extends JpaRepository<Video, Long>{
 	Optional<Video> findById(Long id);
 	List<Video> findAll();
 	void deleteById(Long id);
-
+	/*
+	List<Video> findByTitleContainingOrDescriptionContainingOrCategoriesContainingOrSectionsContaining(String searchTerm, String searchTerm1, String searchTerm2);
+	*/
 
 }
