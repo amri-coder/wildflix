@@ -23,25 +23,17 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
         http
                 .csrf()
                 .disable()
-                .formLogin()
-                .disable()
-                .httpBasic()
-                .disable()
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests()
-              //  .requestMatchers("/swagger-ui/**")
-              //  .anyRequest()
-              //  .permitAll()
-                .requestMatchers("/auth/**")
+                .requestMatchers("/**" )
                 .permitAll()
                 .requestMatchers("/users/**")
-                .permitAll()
+                .hasAuthority("ADMIN")
                 .anyRequest()
-               .authenticated()
+                .authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

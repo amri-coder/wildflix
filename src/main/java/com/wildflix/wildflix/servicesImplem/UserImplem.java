@@ -10,6 +10,7 @@ import com.wildflix.wildflix.models.Role;
 import com.wildflix.wildflix.models.Video;
 import com.wildflix.wildflix.repository.RoleRepository;
 import com.wildflix.wildflix.repository.VideoRepository;
+import com.wildflix.wildflix.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
@@ -36,6 +37,9 @@ public class UserImplem implements UserService{
 	RoleRepository roleRepository;
 
 	@Autowired
+	EmailService emailService;
+
+	@Autowired
 	VideoRepository videoRepository;
 
 
@@ -51,6 +55,10 @@ public class UserImplem implements UserService{
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		User result = userRepository.save(user);
 		addRoleToUser(result.getEmail(), role);
+		emailService.sendEmail(
+				user.getEmail(),
+				"Test Emir",
+				"Test Emir");
 		return result;
 	}
 	@Override

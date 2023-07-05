@@ -1,9 +1,6 @@
 package com.wildflix.wildflix.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +19,13 @@ public class Section {
 
     private String title;
     private String description;
+
+    @ManyToMany
+    @JoinTable(name="sections_videos",
+    joinColumns = @JoinColumn(name="section_id"),
+            inverseJoinColumns = @JoinColumn(name="video_id")
+    )
+
     private List<Video> videos = new ArrayList<>();
 
 }
