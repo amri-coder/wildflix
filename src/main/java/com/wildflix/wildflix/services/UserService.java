@@ -17,12 +17,14 @@ public interface UserService {
 	User modifyUserById(Long id, User user);
 	void deleteUserById(Long id);
 
+	boolean emailConfirmation(String email, int code);
+
 	Optional<User> getUserByEmail(String email);
 
 	void addRoleToUser(String email, RoleName roleName);
+
 	String login (String email, String password);
 
-	// A vérifier avec billel pour les deux méthodes
 	List<Video> addVideoToFavorite(String email, Long idVideo) throws VideoNotFoundException, UserNotFound;
 	List<Video> removeVideoFromFavorite(String email, Long idVideo) throws UserNotFound, VideoNotFoundException;
 }

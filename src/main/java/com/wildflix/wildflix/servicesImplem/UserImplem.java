@@ -55,10 +55,19 @@ public class UserImplem implements UserService{
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		User result = userRepository.save(user);
 		addRoleToUser(result.getEmail(), role);
+		Random random = new Random();
+		int code = random.nextInt(1000, 10000);
+		user.setVerificationEmailCode(code);
 		emailService.sendEmail(
 				user.getEmail(),
-				"Test Emir",
-				"Test Emir");
+				"Bienvenue à notre site wildflix",
+				"Bienvenue sur notre plateforme de films !\n\nVoici le code de vérification pour s'inscrire sur notre site : " + code + "\n\n" +
+						"Explorez notre vaste catalogue de films de tous les genres, profitez d'une expérience cinématographique immersive et partagez votre passion avec notre communauté.\n\n" +
+						"Regardez vos films préférés à tout moment, sur tous vos appareils.\n\n" +
+						"Notre équipe est là pour vous aider et assurer votre satisfaction.\n\n" +
+						"Rejoignez-nous et vivez des moments captivants dans notre univers cinématographique.\n\n" +
+						"Bienvenue dans notre monde du cinéma, votre destination pour un divertissement inoubliable !"
+		);
 		return result;
 	}
 	@Override
@@ -76,6 +85,23 @@ public class UserImplem implements UserService{
 	@Override
 	public void deleteUserById(Long id) {
 		userRepository.deleteById(id);
+	}
+
+	@Override
+	public boolean emailConfirmation(String email, int code) {
+		Optional<User> user = userRepository.findByEmail(email);
+		if(user.isPresent()) {
+			int codeUser = user.get().getVerificationEmailCode();
+			if(code == codeUser) {
+				user.get().setEmailVerified(true);
+				return true;
+			}
+			else
+				return false;
+		}
+		else {
+			return false;
+		}
 	}
 
 	@Override
@@ -135,18 +161,22 @@ public class UserImplem implements UserService{
 	}
 
 	@Override
-	public String login (String email, String password){
+	public String login (String email, String password) {
 		Optional<User> user = userRepository.findByEmail(email);
-		if (user.isPresent()){
-			authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(
-							email,
-							password
-					)
-			);
-			return jwtService.generateToken(user.get());
+		if (user.isPresent()) {
+			if (user.get().isEmailVerified()) {
+				authenticationManager.authenticate(
+						new UsernamePasswordAuthenticationToken(
+								email,
+								password
+						)
+				);
+				return jwtService.generateToken(user.get());
+			}
+			else { return "email not verified"; }
+		} else {
+			return "user not found";
 		}
-		return "user not found";
 	}
 
 	@Override
@@ -169,4 +199,6 @@ public class UserImplem implements UserService{
 			return null;
 		}
 	}
+
+
 }

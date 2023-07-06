@@ -6,10 +6,8 @@ import com.wildflix.wildflix.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Map;
 
 @RequestMapping("/auth")
@@ -34,7 +32,30 @@ public class AuthController {
                     HttpStatus.CREATED);
     }
     @PostMapping("/login")
-    public String login(@RequestBody Map<String, String> request){
-        return userService.login(request.get("email"), request.get("password"));
+    ResponseEntity<String> login(@RequestBody Map<String, String> form){
+        String response=userService.login(form.get("email"), form.get("password"));
+            if (response == "user not found") {
+                return new ResponseEntity<>(
+                        "L'utilisateur n'est pas trouvé !",
+                        HttpStatus.NOT_FOUND);
+            } else
+            if(response.equals("email not verified")) {
+                return new ResponseEntity<>(
+                        "Vous n'avez pas encore vérifié votre e-mail ! Veuillez vérifier votre e-mail.",
+                        HttpStatus.UNAUTHORIZED
+                );
+            } else {
+                return new ResponseEntity<>(
+                        response,
+                        HttpStatus.OK
+                );
+            }
+        }
+
+
+    @PostMapping("email-confirmation/{email}")
+    boolean emailConfirmation(@PathVariable String email, @RequestBody Map<String, Integer> request){
+        return userService.emailConfirmation(email, request.get("code"));
     }
+
 }
