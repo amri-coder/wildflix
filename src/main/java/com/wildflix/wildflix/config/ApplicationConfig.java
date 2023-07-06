@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ApplicationConfig {
+
+    @Autowired
     private UserRepository userRepository;
 
 

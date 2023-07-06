@@ -12,8 +12,7 @@ public class EmailImplem implements EmailService {
     //private final JavaMailSender emailSender;
 
     @Autowired
-    JavaMailSender emailSender;
-
+    private JavaMailSender emailSender;
 
 /*
     @Autowired

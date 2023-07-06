@@ -23,13 +23,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
         http
                 .csrf()
-                .disable()
-                .formLogin()
-                .disable()
-                .httpBasic()
                 .disable()
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests()
@@ -41,8 +36,10 @@ public class SecurityConfig {
                 .permitAll()
                 //.requestMatchers("/users/**")
               //  .permitAll()
+                .requestMatchers("/users/**")
+                .hasAuthority("ADMIN")
                 .anyRequest()
-               .authenticated()
+                .authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

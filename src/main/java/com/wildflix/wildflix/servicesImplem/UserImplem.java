@@ -37,10 +37,11 @@ public class UserImplem implements UserService{
 	RoleRepository roleRepository;
 
 	@Autowired
-	VideoRepository videoRepository;
+	EmailService emailService;
 
 	@Autowired
-	EmailService emailService;
+	VideoRepository videoRepository;
+
 	@Autowired
 	JwtService jwtService;
 
@@ -55,9 +56,10 @@ public class UserImplem implements UserService{
 		addRoleToUser(result.getEmail(), role);
 		emailService.sendEmail(
 				user.getEmail(),
-				"test",
-		"Test"
+				"Emir test 1",
+		"Test "
 		);
+
 		return result;
 	}
 	@Override
