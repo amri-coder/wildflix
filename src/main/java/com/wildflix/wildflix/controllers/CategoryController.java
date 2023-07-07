@@ -7,6 +7,8 @@ import com.wildflix.wildflix.services.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +23,7 @@ public class CategoryController {
      * @param category
      * @return
      */
+
     @PostMapping("/categories")
     public ResponseEntity<Category> createCategory(@RequestBody Category category) {
         return
