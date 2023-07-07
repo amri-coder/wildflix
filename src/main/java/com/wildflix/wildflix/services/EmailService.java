@@ -1,5 +1,6 @@
 package com.wildflix.wildflix.services;
 
+
 public interface EmailService {
-    void sendEmail(String toUser, String subject, String body);
+    public void sendEmail(String ToUser, String subject, String body);
 }

@@ -19,11 +19,13 @@ public class Section {
 
     private String title;
     private String description;
+
     @ManyToMany
     @JoinTable(name = "sections_videos",
             joinColumns = @JoinColumn(name = "section_id"),
             inverseJoinColumns = @JoinColumn(name = "video_id")
     )
+
     private List<Video> videos = new ArrayList<>();
 
 }

@@ -24,4 +24,5 @@ public class EmailImplem implements EmailService {
         message.setText(body);
         emailSender.send(message);
     }
+
 }

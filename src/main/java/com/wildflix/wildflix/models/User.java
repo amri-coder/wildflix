@@ -29,6 +29,9 @@ public class User implements UserDetails{
 	@Column(unique=true, nullable=false)
 	private String email;
 	private String password;
+	private int verificationEmailCode;
+	private boolean isEmailVerified = false;
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 			name = "favorite",

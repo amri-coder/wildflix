@@ -12,5 +12,6 @@ public interface VideoService {
 	Video getVideoById(Long id, boolean loggedIn);
 	void deleteVideoById(Long id, boolean loggedIn);
 	Video modifyVideoById(Long id, Video video, boolean loggedIn);
+	void addCategoryToVideo(Long id, String name);
 
 }
