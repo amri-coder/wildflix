@@ -57,11 +57,11 @@ public class VideoController {
 	 * @param id
 	 * @return
 	 */
-/*	@DeleteMapping("/admin/videos/{id}")
-	public ResponseEntity<?> deleteVideoById(@PathVariable Long id){
-		Video video = videoService.getVideoById(id);
+	@DeleteMapping("/admin/videos/{id}")
+	public ResponseEntity<?> deleteVideoById(@PathVariable Long id, Authentication auth){
+		Video video = videoService.getVideoById(id, auth!=null);
 		if(video !=null) {
-			videoService.deleteVideoById(id);
+			videoService.deleteVideoById(id, auth!=null);
 			return ResponseEntity.ok().build();
 		}else {
 			return ResponseEntity.notFound().build();
@@ -69,13 +69,13 @@ public class VideoController {
 	}
 
 	@PutMapping("/admin/videos/{id}")
-	public ResponseEntity<?> modifyVideoById(@PathVariable Long id){
-		Video video = videoService.getVideoById(id);
+	public ResponseEntity<?> modifyVideoById(@PathVariable Long id, Authentication auth){
+		Video video = videoService.getVideoById(id, auth!=null);
 		if(video !=null) {
-			videoService.modifyVideoById(id, video);
+			videoService.modifyVideoById(id, video, auth!=null);
 			return ResponseEntity.ok().build();
 		}else {
 			return ResponseEntity.notFound().build();
 		}
-	} */
+	}
 }

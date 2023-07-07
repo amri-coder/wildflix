@@ -43,20 +43,20 @@ public class VideoImplem implements VideoService{
 		 return null;
 	}
 	@Override
-	public void deleteVideoById(Long id) {
+	public void deleteVideoById(Long id, boolean loggedIn) {
 		videoRepository.deleteById(id);
 	}
 
 	@Override
-	public Video modifyVideoById(Long id, Video newVideo){
+	public Video modifyVideoById(Long id, Video newVideo, boolean loggedIn){
 
 		Optional<Video> video = videoRepository.findById(id);
-		if(video.isPresent()) {
+		if(video.isPresent() && loggedIn) {
 			video.get().setTitle(newVideo.getTitle()) ;
 			video.get().setDescription(newVideo.getDescription());
 			video.get().setPrivate(newVideo.isPrivate());
 			video.get().setReleaseDate(newVideo.getReleaseDate());
-			return video.get();
+			return videoRepository.save(video.get());
 		}else {
 			return null;
 		}

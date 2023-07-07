@@ -10,7 +10,7 @@ public interface VideoService {
 	Video createVideo(Video video);
 	List<Video> getAllVideos(boolean loggedIn);
 	Video getVideoById(Long id, boolean loggedIn);
-	void deleteVideoById(Long id);
-	Video modifyVideoById(Long id, Video video);
+	void deleteVideoById(Long id, boolean loggedIn);
+	Video modifyVideoById(Long id, Video video, boolean loggedIn);
 
 }
