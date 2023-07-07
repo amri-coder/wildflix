@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.wildflix.wildflix.models.Video;
@@ -28,13 +29,18 @@ public class VideoImplem implements VideoService{
 		else return videoRepository.findByIsPrivate(false);
 	}
 	@Override
-	public Video getVideoById(Long id){
+	public Video getVideoById(Long id, boolean loggedIn){
 		Optional<Video> video = videoRepository.findById(id);
 		if(video.isPresent()) {
-			return video.get();
-		}else {
-			return null;
+			if(video.get().isPrivate()){
+				if(loggedIn){
+					return video.get();
+				}
+				else return null;
+				}
+			else return video.get();
 			}
+		 return null;
 	}
 	@Override
 	public void deleteVideoById(Long id) {
