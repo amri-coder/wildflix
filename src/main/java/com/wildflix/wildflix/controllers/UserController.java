@@ -10,6 +10,7 @@ import com.wildflix.wildflix.enums.RoleName;
 import com.wildflix.wildflix.exceptions.UserNotFound;
 import com.wildflix.wildflix.exceptions.VideoNotFoundException;
 import com.wildflix.wildflix.models.Video;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,10 +62,24 @@ public class UserController {
 	}
 
 	// A vérifier avec Billel
+
+	//Quand l'utilisateur modifie ses informations lui même
 	@PutMapping("/users")
-	public ResponseEntity<?> modifyUserById(Authentication auth, @RequestBody User modifiedUser){
-		if( auth != null && auth.getPrincipal() instanceof User) {
+	public ResponseEntity<?> userModifyUser(Authentication auth, @RequestBody User modifiedUser){
+		if( auth != null && auth.getPrincipal() instanceof User && ((User) auth.getPrincipal()).getRoles().equals("USER")) {
 			userService.modifyUserById(((User)auth.getPrincipal()).getId(), modifiedUser);
+			return ResponseEntity.ok().build();
+		}
+
+		return ResponseEntity.notFound().build();
+	}
+
+	//Quand l'admin modifie les informations d'un autre utilisateur
+	@PutMapping("/users/{id}")
+	public ResponseEntity<?> adminModifyUserById(@PathVariable Long id){
+		User user = userService.getUserById(id);
+		if( user !=null) {
+			userService.modifyUserById(id, user);
 			return ResponseEntity.ok().build();
 		}
 

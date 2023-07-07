@@ -55,7 +55,7 @@ public class UserImplem implements UserService{
 		User result = userRepository.save(user);
 		addRoleToUser(result.getEmail(), role);
 		emailService.sendEmail(
-				"abbesbilel88@gmail.com",
+				user.getEmail(),
 				"Test sending email",
 				"test body"
 		);

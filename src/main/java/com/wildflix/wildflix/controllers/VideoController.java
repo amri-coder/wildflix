@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import com.wildflix.wildflix.models.Video;
@@ -21,7 +22,7 @@ public class VideoController {
 	 * @param video
 	 * @return
 	 */
-	@PostMapping("/videos")
+	@PostMapping("/admin/videos")
 	public ResponseEntity<Video> createVideo(@RequestBody Video video) {
 		return 
 				new ResponseEntity<>(videoService.createVideo(video),
@@ -32,9 +33,9 @@ public class VideoController {
 	 * @return
 	 */
 	@GetMapping("/videos")
-	public ResponseEntity<List<Video>> getAllVideos(){
+	public ResponseEntity<List<Video>> getAllVideos(Authentication auth){
 		return
-				new ResponseEntity<>(videoService.getAllVideos(), 
+				new ResponseEntity<>(videoService.getAllVideos(auth!=null),
 						HttpStatus.OK);
 	}
 	/**
@@ -56,7 +57,7 @@ public class VideoController {
 	 * @param id
 	 * @return
 	 */
-	@DeleteMapping("/videos/{id}")
+	@DeleteMapping("/admin/videos/{id}")
 	public ResponseEntity<?> deleteVideoById(@PathVariable Long id){
 		Video video = videoService.getVideoById(id);
 		if(video !=null) {
@@ -67,7 +68,7 @@ public class VideoController {
 		}		
 	}
 
-	@PutMapping("/videos/{id}")
+	@PutMapping("/admin/videos/{id}")
 	public ResponseEntity<?> modifyVideoById(@PathVariable Long id){
 		Video video = videoService.getVideoById(id);
 		if(video !=null) {

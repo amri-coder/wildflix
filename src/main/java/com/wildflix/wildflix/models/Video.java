@@ -1,5 +1,6 @@
 package com.wildflix.wildflix.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,6 +27,7 @@ public class Video {
 	
 	
 	private boolean isPrivate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yyyy")
 	private Date releaseDate;
 
 	@ManyToMany(fetch = FetchType.EAGER)

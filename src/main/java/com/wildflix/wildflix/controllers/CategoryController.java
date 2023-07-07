@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+
 public class CategoryController {
     @Autowired
     CategoryService categoryService;
@@ -21,7 +22,7 @@ public class CategoryController {
      * @param category
      * @return
      */
-    @PostMapping("/categories")
+    @PostMapping("/admin/categories")
     public ResponseEntity<Category> createCategory(@RequestBody Category category) {
         return
                 new ResponseEntity<>(categoryService.createCategory(category),
@@ -56,7 +57,7 @@ public class CategoryController {
      * @param id
      * @return
      */
-    @DeleteMapping("/categories/{id}")
+    @DeleteMapping("/admin/categories/{id}")
     public ResponseEntity<?> deleteCategoryById(@PathVariable Long id){
         Category category = categoryService.getCategoryById(id);
         if(category !=null) {
@@ -67,7 +68,7 @@ public class CategoryController {
         }
     }
 
-    @PutMapping("/categories/{id}")
+    @PutMapping("/admin/categories/{id}")
     public ResponseEntity<?> modifyCategoryById(@PathVariable Long id){
         Category category = categoryService.getCategoryById(id);
         if(category !=null) {

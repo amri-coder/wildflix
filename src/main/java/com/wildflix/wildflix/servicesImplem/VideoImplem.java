@@ -21,8 +21,11 @@ public class VideoImplem implements VideoService{
 		return videoRepository.save(video);
 	}
 	@Override
-	public List<Video> getAllVideos(){
-		return videoRepository.findAll();
+	public List<Video> getAllVideos(boolean loggedIn){
+		if(loggedIn) {
+			return videoRepository.findAll();
+		}
+		else return videoRepository.findByIsPrivate(false);
 	}
 	@Override
 	public Video getVideoById(Long id){
