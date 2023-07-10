@@ -93,4 +93,8 @@ public class User implements UserDetails{
 	public boolean isEnabled() {
 		return true;
 	}
+
+	public boolean hasRoleName(String roleName) {
+		return this.roles.stream().anyMatch(role -> roleName.equals(role.getName().name()));
+	}
 }

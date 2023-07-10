@@ -69,10 +69,10 @@ public class VideoController {
 	}
 
 	@PutMapping("/admin/videos/{id}")
-	public ResponseEntity<?> modifyVideoById(@PathVariable Long id, Authentication auth){
+	public ResponseEntity<?> modifyVideoById(@PathVariable Long id, Authentication auth, @RequestBody Video newVideo){
 		Video video = videoService.getVideoById(id, auth!=null);
 		if(video !=null) {
-			videoService.modifyVideoById(id, video, auth!=null);
+			videoService.modifyVideoById(id, newVideo, auth!=null);
 			return ResponseEntity.ok().build();
 		}else {
 			return ResponseEntity.notFound().build();

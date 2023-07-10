@@ -56,10 +56,11 @@ public class VideoImplem implements VideoService{
 
 		Optional<Video> video = videoRepository.findById(id);
 		if(video.isPresent() && loggedIn) {
-			video.get().setTitle(newVideo.getTitle()) ;
-			video.get().setDescription(newVideo.getDescription());
-			video.get().setPrivate(newVideo.isPrivate());
-			video.get().setReleaseDate(newVideo.getReleaseDate());
+			Video v = video.get();
+			v.setTitle(newVideo.getTitle()) ;
+			v.setDescription(newVideo.getDescription());
+			v.setPrivate(newVideo.isPrivate());
+			//v.setReleaseDate(newVideo.getReleaseDate());
 			return videoRepository.save(video.get());
 		}else {
 			return null;

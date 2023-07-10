@@ -47,13 +47,24 @@ public class CategoryController {
      * @param id
      * @return
      */
-    @GetMapping("/categories/{id}")
+    @GetMapping("/categories/id/{id}")
     public ResponseEntity<Category> getCategoryById(@PathVariable Long id){
         Category result = categoryService.getCategoryById(id);
         if(result != null) {
             return new ResponseEntity<>(result,HttpStatus.OK);
         }else {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/categories/{name}")
+    public ResponseEntity<Category> getCategoryByName(@PathVariable String name){
+        Category result = categoryService.getCategoryByName(name);
+        if(result!=null){
+            return new ResponseEntity<>(result,HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
         }
     }
     /**
@@ -73,10 +84,10 @@ public class CategoryController {
     }
 
     @PutMapping("/admin/categories/{id}")
-    public ResponseEntity<?> modifyCategoryById(@PathVariable Long id){
+    public ResponseEntity<?> modifyCategoryById(@PathVariable Long id, @RequestBody Category newCategory){
         Category category = categoryService.getCategoryById(id);
         if(category !=null) {
-            categoryService.modifyCategoryById(id, category);
+            categoryService.modifyCategoryById(id, newCategory);
             return ResponseEntity.ok().build();
         }else {
             return ResponseEntity.notFound().build();

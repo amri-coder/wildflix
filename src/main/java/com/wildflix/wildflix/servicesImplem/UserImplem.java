@@ -188,12 +188,10 @@ public class UserImplem implements UserService{
 
 		Optional<User> user = userRepository.findById(id);
 		if(user.isPresent()) {
-			user.get().setFirstname(newUser.getFirstname());
-			user.get().setLastname(newUser.getLastname());
-			user.get().setEmail(newUser.getEmail());
-			user.get().setPassword(newUser.getPassword());
-			user.get().setFavorite(newUser.getFavorite());
-			return user.get();
+			User u = user.get();
+			u.setFirstname(newUser.getFirstname());
+			u.setLastname(newUser.getLastname());
+			return userRepository.save(u);
 		}else {
 			return null;
 		}
