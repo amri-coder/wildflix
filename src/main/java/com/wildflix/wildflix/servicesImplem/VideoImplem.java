@@ -1,5 +1,6 @@
 package com.wildflix.wildflix.servicesImplem;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,14 +16,19 @@ import com.wildflix.wildflix.services.VideoService;
 
 @Service
 public class VideoImplem implements VideoService{
-	
+
 	@Autowired
 	VideoRepository videoRepository;
 	@Autowired
 	CategoryRepository categoryRepository;
-	
+
 	@Override
 	public Video createVideo(Video video) {
+		List<Category> categories = new ArrayList<>();
+		video.getCategories().forEach(
+				category -> categories.add(categoryRepository.findById(category.getId()).orElse(null))
+		);
+		video.setCategories(categories);
 		return videoRepository.save(video);
 	}
 	@Override
@@ -75,4 +81,9 @@ public class VideoImplem implements VideoService{
 			 video.get().getCategories().add(category.get());
 		 }
 	}
+
+	/* @Override
+	public List<Video> getVideosByCategory(Category category){
+		return videoRepository.findByCategory(category);
+	} */
 }

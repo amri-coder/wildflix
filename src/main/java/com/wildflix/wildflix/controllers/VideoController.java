@@ -2,6 +2,8 @@ package com.wildflix.wildflix.controllers;
 
 import java.util.List;
 
+import com.wildflix.wildflix.models.Category;
+import com.wildflix.wildflix.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,9 @@ public class VideoController {
 	
 	@Autowired
 	VideoService videoService;
+
+	@Autowired
+	CategoryService categoryService;
 	
 	/**
 	 * Create Video
@@ -78,4 +83,11 @@ public class VideoController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+
+	/* @GetMapping("/videos/category/{categoryId}")
+	public List<Video> getVideosByCategory(@PathVariable Long categoryId) {
+		Category category = new Category();
+		category.setId(categoryId);
+		return videoService.getVideosByCategory(category);
+	} */
 }

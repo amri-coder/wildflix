@@ -46,16 +46,37 @@ public class UserController {
 		}
 	}
 
+	@GetMapping("/users/me")
+	public ResponseEntity<User> getUserMe(Authentication auth){
+		User user = userService.getUserById(((User)auth.getPrincipal()).getId());
+		if(user != null) {
+			return
+					new ResponseEntity<>(userService.getUserById(((User)auth.getPrincipal()).getId()), HttpStatus.OK);} else {
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
+	}
+
 	@GetMapping("/users")
 	public ResponseEntity<List<User>> getAllUsers(){
 		return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
 	}
 
-	@DeleteMapping("/users/{id}")
+	@DeleteMapping("/admin/users/{id}")
 	public ResponseEntity<?> deleteUserById(@PathVariable Long id){
 		User user = userService.getUserById(id);
 		if(user !=null) {
 			userService.deleteUserById(id);
+			return ResponseEntity.ok().build();
+		}else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@DeleteMapping("/users")
+	public ResponseEntity<?> deleteUser(Authentication auth){
+		User user = userService.getUserById(((User)auth.getPrincipal()).getId());
+		if(user !=null) {
+			userService.deleteUserById(((User)auth.getPrincipal()).getId());
 			return ResponseEntity.ok().build();
 		}else {
 			return ResponseEntity.notFound().build();
@@ -79,7 +100,7 @@ public class UserController {
 	}
 
 	//Quand l'admin modifie les informations d'un autre utilisateur
-	@PutMapping("admin/users/{id}")
+	@PutMapping("/admin/users/{id}")
 	public ResponseEntity<?> adminModifyUserById(@PathVariable Long id, @RequestBody User modifiedUser){
 		User user = userService.getUserById(id);
 		if( user !=null) {

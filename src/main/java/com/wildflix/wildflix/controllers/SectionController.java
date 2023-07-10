@@ -1,7 +1,9 @@
 package com.wildflix.wildflix.controllers;
 
+import com.wildflix.wildflix.models.Category;
 import com.wildflix.wildflix.models.Section;
 import com.wildflix.wildflix.services.SectionService;
+import com.wildflix.wildflix.services.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,17 +11,20 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
 public class SectionController {
 
     @Autowired
     SectionService sectionService;
+    @Autowired
+    VideoService videoService;
 
     /**
      * Create Section
      * @param section
      * @return
      */
-    @PostMapping("/sections")
+    @PostMapping("/admin/sections")
     public ResponseEntity<Section> createSection(@RequestBody Section section) {
         return
                 new ResponseEntity<>(sectionService.createSection(section),
@@ -54,7 +59,7 @@ public class SectionController {
      * @param id
      * @return
      */
-    @DeleteMapping("/sections/{id}")
+    @DeleteMapping("/admin/sections/{id}")
     public ResponseEntity<?> deleteSectionById(@PathVariable Long id){
         Section section = sectionService.getSectionById(id);
         if(section !=null) {
@@ -70,14 +75,22 @@ public class SectionController {
      * @param id
      * @return
      */
-    @PutMapping("/sections/{id}")
-    public ResponseEntity<?> modifySectionById(@PathVariable Long id){
+    @PutMapping("/admin/sections/{id}")
+    public ResponseEntity<?> modifySectionById(@PathVariable Long id, @RequestBody Section newSection){
         Section section = sectionService.getSectionById(id);
         if(section !=null) {
-            sectionService.modifySectionById(id, section);
+            sectionService.modifySectionById(id, newSection);
             return ResponseEntity.ok().build();
         }else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @DeleteMapping("/{sectionId}/videos/{videoId}")
+    public ResponseEntity<String> removeVideoFromSection(
+            @PathVariable("sectionId") Long sectionId,
+            @PathVariable("videoId") Long videoId) {
+        sectionService.deleteVideoFromSection(sectionId, videoId);
+        return ResponseEntity.ok("Video removed from section successfully");
     }
 }

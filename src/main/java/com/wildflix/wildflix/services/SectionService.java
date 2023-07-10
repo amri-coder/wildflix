@@ -10,5 +10,6 @@ public interface SectionService {
     List<Section> getAllSections();
     Section getSectionById(Long id);
     void deleteSectionById(Long id);
+    void deleteVideoFromSection(Long sectionId, Long videoId);
     Section modifySectionById(Long id, Section Section);
 }
