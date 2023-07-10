@@ -103,7 +103,32 @@ public class AuthController {
             body,
              HttpStatus.NOT_FOUND);
         }
+    }
+    @PostMapping("/reset-password-request")
+    ResponseEntity<?> resetPasswordRequest(@RequestBody Map<String, String> request){
+        Map<String, Object> body = new HashMap<>();
 
+        try{
+            if(userService.resetPasswordRequest(request.get("email"))){
+                body.put("message", "A reset email has been sent to you !");
+                return new ResponseEntity<>(
+                        body,
+                        HttpStatus.OK
+                );
+            }else{
+                body.put("message", "An error occurred, try again !");
+                return new ResponseEntity<>(
+                        body,
+                        HttpStatus.INTERNAL_SERVER_ERROR
+                );
+            }
 
+        }catch(UserNotFound e){
+            body.put("message", "User not found !");
+            return new ResponseEntity<>(
+                    body,
+                    HttpStatus.NOT_FOUND
+            );
+        }
     }
 }

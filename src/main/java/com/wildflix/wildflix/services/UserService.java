@@ -27,4 +27,5 @@ public interface UserService {
 	List<Video> removeVideoFromFavorite(String email, Long idVideo) throws UserNotFound, VideoNotFoundException;
 
 	boolean emailConfirmation(String email, int code) throws UserNotFound;
+	boolean resetPasswordRequest(String email) throws UserNotFound;
 }

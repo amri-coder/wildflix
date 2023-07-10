@@ -192,4 +192,21 @@ public class UserImplem implements UserService{
 			throw new UserNotFound();
 		}
 	}
+
+	@Override
+	public boolean resetPasswordRequest(String email) throws UserNotFound {
+		User user = userRepository.findByEmail(email).orElseThrow(
+				()->new UserNotFound()
+		);
+		String jwt = jwtService.generateToken(user);
+		StringBuilder sb = new StringBuilder();
+		sb.append("To reset your password, please click on the following link");
+		sb.append("http://localhost:4200/reset-password/"+jwt);
+		emailService.sendEmail(
+				email,
+				"Password reset",
+				sb.toString()
+		);
+		return true;
+	}
 }
