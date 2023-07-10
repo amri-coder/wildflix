@@ -3,6 +3,7 @@ package com.wildflix.wildflix.servicesImplem;
 import java.util.*;
 
 import com.wildflix.wildflix.enums.RoleName;
+import com.wildflix.wildflix.exceptions.JWTException;
 import com.wildflix.wildflix.exceptions.UserNotFound;
 import com.wildflix.wildflix.exceptions.VideoNotFoundException;
 import com.wildflix.wildflix.models.Category;
@@ -200,13 +201,32 @@ public class UserImplem implements UserService{
 		);
 		String jwt = jwtService.generateToken(user);
 		StringBuilder sb = new StringBuilder();
-		sb.append("To reset your password, please click on the following link");
+		sb.append("Hello Dear, \n");
+		sb.append("To reset your password, please click on the following link : \n");
 		sb.append("http://localhost:4200/reset-password/"+jwt);
+		sb.append("\n \n");
+		sb.append("Cordially, \n");
+		sb.append("WildFlix, The Best Movie In World ! \n");
 		emailService.sendEmail(
 				email,
 				"Password reset",
 				sb.toString()
 		);
 		return true;
+	}
+
+	@Override
+	public void resetPassword(String token, String password) throws UserNotFound, JWTException {
+
+		try{
+			String userEmail = jwtService.extractUsername(token);
+			User user = userRepository.findByEmail(userEmail).orElseThrow(
+					()-> new UserNotFound()
+			);
+			String passwordEncoder=this.passwordEncoder.encode(password);
+			user.setPassword(passwordEncoder);
+		}catch(Exception e){
+			throw new JWTException();
+		}
 	}
 }

@@ -2,6 +2,7 @@ package com.wildflix.wildflix.controllers;
 
 import com.wildflix.wildflix.DTOs.UserDTO;
 import com.wildflix.wildflix.enums.RoleName;
+import com.wildflix.wildflix.exceptions.JWTException;
 import com.wildflix.wildflix.exceptions.UserNotFound;
 import com.wildflix.wildflix.models.User;
 import com.wildflix.wildflix.services.UserService;
@@ -131,4 +132,34 @@ public class AuthController {
             );
         }
     }
+
+    @PutMapping("/reset-password")
+    ResponseEntity<?> resetPassword(@RequestBody Map<String, String> request){
+        Map<String, Object> body = new HashMap<>();
+        try{
+            userService.resetPassword(request.get("token"), request.get("password"));
+            body.put("message","The password has been changed");
+            return new ResponseEntity<>(
+                    body,
+                    HttpStatus.OK
+            );
+        }catch(UserNotFound e){
+            body.put("Message", "User not found !");
+            return new ResponseEntity<>(
+                    body,
+                    HttpStatus.NOT_FOUND
+            );
+        }catch(JWTException e){
+
+            body.put("Message", "The link is invalid, try again");
+            return new ResponseEntity<>(
+                    body,
+                    HttpStatus.UNAUTHORIZED
+            );
+
+        }
+    }
+
+
+
 }
