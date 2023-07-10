@@ -53,11 +53,14 @@ public class UserImplem implements UserService{
 	public User createUser(User user, RoleName role) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		User result = userRepository.save(user);
+		Random random = new Random();
+		int code = random.nextInt(1000,10000);
 		addRoleToUser(result.getEmail(), role);
+		user.setVerificationEmailCode(code);
 		emailService.sendEmail(
 				user.getEmail(),
-				"Emir test 1",
-		"Test "
+				"Vérification de l'adresse email",
+		"Voilà le code de vérification de votre email : "+ code+""
 		);
 
 		return result;
@@ -139,15 +142,18 @@ public class UserImplem implements UserService{
 	public String login (String email, String password){
 		Optional<User> user = userRepository.findByEmail(email);
 		if (user.isPresent()){
-			authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(
-							email,
-							password
-					)
-			);
-			return jwtService.generateToken(user.get());
+			if(user.get().isEmailVerified()){
+				authenticationManager.authenticate(
+						new UsernamePasswordAuthenticationToken(
+								email,
+								password
+						)
+				);
+				return jwtService.generateToken(user.get());
+			}return "-1 ";
+
 		}
-		return "user not found";
+		return null;
 	}
 
 	@Override
@@ -168,6 +174,22 @@ public class UserImplem implements UserService{
 			return user.get();
 		}else {
 			return null;
+		}
+	}
+
+	@Override
+	public boolean emailConfirmation(String email, int code) throws UserNotFound {
+		Optional<User> user = userRepository.findByEmail(email);
+		if(user.isPresent()){
+			if(user.get().getVerificationEmailCode()==code){
+				user.get().setEmailVerified(true);
+				return true;
+			}
+			else
+				return false;
+		}
+		else{
+			throw new UserNotFound();
 		}
 	}
 }

@@ -24,6 +24,11 @@ public class User implements UserDetails{
 	
 	private String firstname;
 	private String lastname;
+
+
+	private int verificationEmailCode;
+
+	private boolean isEmailVerified = false;
 	
 	//l'email doit être unique
 	@Column(unique=true, nullable=false)

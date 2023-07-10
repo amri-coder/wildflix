@@ -25,4 +25,6 @@ public interface UserService {
 	// A vérifier avec billel pour les deux méthodes
 	List<Video> addVideoToFavorite(String email, Long idVideo) throws VideoNotFoundException, UserNotFound;
 	List<Video> removeVideoFromFavorite(String email, Long idVideo) throws UserNotFound, VideoNotFoundException;
+
+	boolean emailConfirmation(String email, int code) throws UserNotFound;
 }

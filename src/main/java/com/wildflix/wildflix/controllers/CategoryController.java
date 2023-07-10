@@ -3,10 +3,13 @@ package com.wildflix.wildflix.controllers;
 import com.wildflix.wildflix.models.Category;
 import com.wildflix.wildflix.models.Video;
 import com.wildflix.wildflix.services.CategoryService;
+//import com.wildflix.wildflix.services.RoleService;
+import com.wildflix.wildflix.services.UserService;
 import com.wildflix.wildflix.services.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +19,12 @@ public class CategoryController {
     @Autowired
     CategoryService categoryService;
 
+    @Autowired
+    UserService userService;
+
+    //@Autowired
+    //RoleService roleService;
+
     /**
      * Create category
      * @param category
@@ -23,9 +32,11 @@ public class CategoryController {
      */
     @PostMapping("/categories")
     public ResponseEntity<Category> createCategory(@RequestBody Category category) {
+
         return
                 new ResponseEntity<>(categoryService.createCategory(category),
                         HttpStatus.CREATED);
+
     }
     /**
      * Show All categories
