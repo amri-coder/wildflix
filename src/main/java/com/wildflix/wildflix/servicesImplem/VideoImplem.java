@@ -82,8 +82,8 @@ public class VideoImplem implements VideoService{
 		 }
 	}
 
-	/* @Override
-	public List<Video> getVideosByCategory(Category category){
-		return videoRepository.findByCategory(category);
-	} */
+	@Override
+	public List<Video> getVideoByCategory(Long id){
+		return videoRepository.findByCategoryId(id);
+	}
 }

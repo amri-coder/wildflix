@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import com.wildflix.wildflix.models.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.wildflix.wildflix.models.Video;
@@ -16,7 +18,14 @@ public interface VideoRepository extends JpaRepository<Video, Long>{
 	Optional<Video> findById(Long id);
 	List<Video> findByIsPrivate(boolean isPrivate);
 	List<Video> findAll();
-	//List<Video> findByCategory(Category category);
+
+	@Query(nativeQuery = true,
+			value = "SELECT v.* " +
+					"FROM video v " +
+					"INNER JOIN categories cs ON v.id = cs.video_id " +
+					"INNER JOIN category c ON c.id = cs.category_id " +
+					"WHERE c.id = :categoryId")
+	List<Video> findByCategoryId(@Param("categoryId") Long id);
 	void deleteById(Long id);
 
 

@@ -78,4 +78,13 @@ public class SectionImplem implements SectionService {
             return null;
         }
     }
+
+    @Override
+    public List<Video> getSectionMovies(Long id){
+        Optional<Section> section = sectionRepository.findById(id);
+        if(section!=null){
+            return section.get().getVideos();
+        }
+        return null;
+    }
 }

@@ -2,6 +2,7 @@ package com.wildflix.wildflix.controllers;
 
 import com.wildflix.wildflix.models.Category;
 import com.wildflix.wildflix.models.Section;
+import com.wildflix.wildflix.models.Video;
 import com.wildflix.wildflix.services.SectionService;
 import com.wildflix.wildflix.services.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -92,5 +94,15 @@ public class SectionController {
             @PathVariable("videoId") Long videoId) {
         sectionService.deleteVideoFromSection(sectionId, videoId);
         return ResponseEntity.ok("Video removed from section successfully");
+    }
+
+    @GetMapping("/sectionMovies/{id}")
+    public ResponseEntity<List<Video>> getSectionMovies(@PathVariable Long id){
+
+        List<Video> result = sectionService.getSectionMovies(id);
+        if(result.isEmpty()){
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

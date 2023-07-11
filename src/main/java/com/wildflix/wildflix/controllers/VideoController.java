@@ -84,10 +84,8 @@ public class VideoController {
 		}
 	}
 
-	/* @GetMapping("/videos/category/{categoryId}")
+	@GetMapping("/videos/category/{categoryId}")
 	public List<Video> getVideosByCategory(@PathVariable Long categoryId) {
-		Category category = new Category();
-		category.setId(categoryId);
-		return videoService.getVideosByCategory(category);
-	} */
+		return videoService.getVideoByCategory(categoryId);
+	}
 }
