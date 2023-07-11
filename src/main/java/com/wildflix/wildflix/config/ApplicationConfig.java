@@ -2,6 +2,7 @@ package com.wildflix.wildflix.config;
 
 import com.wildflix.wildflix.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -16,7 +17,10 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ApplicationConfig {
-    private final UserRepository userRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
 
     @Bean
     public UserDetailsService userDetailsService() {

@@ -6,6 +6,7 @@ import com.wildflix.wildflix.repository.CategoryRepository;
 import com.wildflix.wildflix.repository.VideoRepository;
 import com.wildflix.wildflix.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,6 +35,15 @@ public class CategoryImplem implements CategoryService {
             return null;
         }
     }
+
+    @Override
+    public Category getCategoryByName(String name){
+        Optional<Category> category = categoryRepository.findByName(name);
+        if(category.isPresent()){
+            return category.get();
+        }
+        return null;
+    }
     @Override
     public void deleteCategoryById(Long id) {
         categoryRepository.deleteById(id);
@@ -44,8 +54,9 @@ public class CategoryImplem implements CategoryService {
 
         Optional<Category> category = categoryRepository.findById(id);
         if(category.isPresent()) {
-            category.get().setName(newCategory.getName());
-            return category.get();
+            Category c = category.get();
+            c.setName(newCategory.getName());
+            return categoryRepository.save(c);
         }else {
             return null;
         }

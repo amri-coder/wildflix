@@ -4,6 +4,7 @@ import com.wildflix.wildflix.security.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,23 +24,28 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
         http
                 .csrf()
                 .disable()
-                .formLogin()
-                .disable()
-                .httpBasic()
-                .disable()
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests()
+              //  .requestMatchers("/swagger-ui/**")
+              //  .anyRequest()
+              //  .permitAll()
+                //.requestMatchers("/**")
+                //.permitAll()
                 .requestMatchers("/auth/**")
                 .permitAll()
-                .requestMatchers("/users/**")
-                .permitAll()
-                //.hasAuthority("ADMIN")
+                .requestMatchers("/admin/**")
+                .hasAnyAuthority("ADMIN")
                 .anyRequest()
-                .authenticated()
+                .permitAll()
+
+                /* .requestMatchers("/users", HttpMethod.POST.name())
+                .permitAll()
+                .anyRequest()
+                .authenticated() */
+
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

@@ -29,6 +29,9 @@ public class User implements UserDetails{
 	@Column(unique=true, nullable=false)
 	private String email;
 	private String password;
+	private int verificationEmailCode;
+	private boolean isEmailVerified = false;
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 			name = "favorite",
@@ -89,5 +92,9 @@ public class User implements UserDetails{
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	public boolean hasRoleName(String roleName) {
+		return this.roles.stream().anyMatch(role -> roleName.equals(role.getName().name()));
 	}
 }
