@@ -17,4 +17,7 @@ public interface VideoService {
 
 	List<Video> getVideoByCategory(Long id);
 
+	/*
+	List<Video> findByTitleContainingOrDescriptionContainingOrCategoriesContainingOrSectionsContaining(String searchTerm, String searchTerm1, String searchTerm2);
+	 */
 }

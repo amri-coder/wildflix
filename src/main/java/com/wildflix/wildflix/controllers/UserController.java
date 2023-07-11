@@ -71,7 +71,6 @@ public class UserController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-
 	@DeleteMapping("/users")
 	public ResponseEntity<?> deleteUser(Authentication auth){
 		User user = userService.getUserById(((User)auth.getPrincipal()).getId());

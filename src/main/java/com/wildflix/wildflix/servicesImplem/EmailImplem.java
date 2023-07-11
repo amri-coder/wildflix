@@ -9,13 +9,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailImplem implements EmailService {
 
+    //private final JavaMailSender emailSender;
+
     @Autowired
     private JavaMailSender emailSender;
 
-//    public EmailImplem(JavaMailSender emailSender) {
-//        this.emailSender = emailSender;
-//    }
-
+/*
+    @Autowired
+    public EmailImplem(JavaMailSender emailSender){
+        this.emailSender=emailSender;
+    }
+*/
     @Override
     public void sendEmail(String toUser, String subject, String body) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -24,5 +28,4 @@ public class EmailImplem implements EmailService {
         message.setText(body);
         emailSender.send(message);
     }
-
 }

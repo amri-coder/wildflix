@@ -8,7 +8,6 @@ import com.wildflix.wildflix.repository.VideoRepository;
 import com.wildflix.wildflix.services.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -74,6 +73,7 @@ public class SectionImplem implements SectionService {
             s.setDescription(newSection.getDescription());
             s.setVideos(newSection.getVideos());
             return sectionRepository.save(s);
+
         }else {
             return null;
         }

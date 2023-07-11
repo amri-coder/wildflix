@@ -3,6 +3,7 @@ package com.wildflix.wildflix.servicesImplem;
 import java.util.*;
 
 import com.wildflix.wildflix.enums.RoleName;
+import com.wildflix.wildflix.exceptions.JWTException;
 import com.wildflix.wildflix.exceptions.UserNotFound;
 import com.wildflix.wildflix.exceptions.VideoNotFoundException;
 import com.wildflix.wildflix.models.Role;
@@ -41,7 +42,6 @@ public class UserImplem implements UserService{
 	@Autowired
 	VideoRepository videoRepository;
 
-
 	@Autowired
 	JwtService jwtService;
 
@@ -67,6 +67,7 @@ public class UserImplem implements UserService{
 						"Rejoignez-nous et vivez des moments captivants dans notre univers cinématographique.\n\n" +
 						"Bienvenue dans notre monde du cinéma, votre destination pour un divertissement inoubliable !"
 		);
+
 		return result;
 	}
 	@Override
@@ -84,23 +85,6 @@ public class UserImplem implements UserService{
 	@Override
 	public void deleteUserById(Long id) {
 		userRepository.deleteById(id);
-	}
-
-	@Override
-	public boolean emailConfirmation(String email, int code) {
-		Optional<User> user = userRepository.findByEmail(email);
-		if(user.isPresent()) {
-			int codeUser = user.get().getVerificationEmailCode();
-			if(code == codeUser) {
-				user.get().setEmailVerified(true);
-				return true;
-			}
-			else
-				return false;
-		}
-		else {
-			return false;
-		}
 	}
 
 	@Override
@@ -164,6 +148,7 @@ public class UserImplem implements UserService{
 		Optional<User> user = userRepository.findByEmail(email);
 		if (user.isPresent()) {
 			if (user.get().isEmailVerified()) {
+
 				authenticationManager.authenticate(
 						new UsernamePasswordAuthenticationToken(
 								email,
@@ -197,5 +182,55 @@ public class UserImplem implements UserService{
 		}
 	}
 
+	@Override
+	public boolean emailConfirmation(String email, int code) throws UserNotFound {
+		Optional<User> user = userRepository.findByEmail(email);
+		if(user.isPresent()){
+			if(user.get().getVerificationEmailCode()==code){
+				user.get().setEmailVerified(true);
+				return true;
+			}
+			else
+				return false;
+		}
+		else{
+			throw new UserNotFound();
+		}
+	}
 
+	@Override
+	public boolean resetPasswordRequest(String email) throws UserNotFound {
+		User user = userRepository.findByEmail(email).orElseThrow(
+				()->new UserNotFound()
+		);
+		String jwt = jwtService.generateToken(user);
+		StringBuilder sb = new StringBuilder();
+		sb.append("Hello Dear, \n");
+		sb.append("To reset your password, please click on the following link : \n");
+		sb.append("http://localhost:4200/reset-password/"+jwt);
+		sb.append("\n \n");
+		sb.append("Cordially, \n");
+		sb.append("WildFlix, The Best Movie In World ! \n");
+		emailService.sendEmail(
+				email,
+				"Password reset",
+				sb.toString()
+		);
+		return true;
+	}
+
+	@Override
+	public void resetPassword(String token, String password) throws UserNotFound, JWTException {
+
+		try{
+			String userEmail = jwtService.extractUsername(token);
+			User user = userRepository.findByEmail(userEmail).orElseThrow(
+					()-> new UserNotFound()
+			);
+			String passwordEncoder=this.passwordEncoder.encode(password);
+			user.setPassword(passwordEncoder);
+		}catch(Exception e){
+			throw new JWTException();
+		}
+	}
 }

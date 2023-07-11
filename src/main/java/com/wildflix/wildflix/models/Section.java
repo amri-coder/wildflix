@@ -27,5 +27,4 @@ public class Section {
     )
 
     private List<Video> videos = new ArrayList<>();
-
 }

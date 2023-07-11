@@ -40,7 +40,6 @@ public class Video {
 	})
 	private List<Category> categories = new ArrayList<>();
 	
-	
 	//l'url de la video "l'endroit où vous allez stocker la video"
 	
 	
