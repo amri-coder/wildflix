@@ -6,7 +6,6 @@ import com.wildflix.wildflix.enums.RoleName;
 import com.wildflix.wildflix.exceptions.JWTException;
 import com.wildflix.wildflix.exceptions.UserNotFound;
 import com.wildflix.wildflix.exceptions.VideoNotFoundException;
-import com.wildflix.wildflix.models.Category;
 import com.wildflix.wildflix.models.Role;
 import com.wildflix.wildflix.models.Video;
 import com.wildflix.wildflix.repository.RoleRepository;
@@ -140,10 +139,11 @@ public class UserImplem implements UserService{
 	}
 
 	@Override
-	public String login (String email, String password){
+	public String login (String email, String password) {
 		Optional<User> user = userRepository.findByEmail(email);
-		if (user.isPresent()){
-			if(user.get().isEmailVerified()){
+		if (user.isPresent()) {
+			if (user.get().isEmailVerified()) {
+
 				authenticationManager.authenticate(
 						new UsernamePasswordAuthenticationToken(
 								email,
@@ -151,10 +151,11 @@ public class UserImplem implements UserService{
 						)
 				);
 				return jwtService.generateToken(user.get());
-			}return "-1 ";
-
+			}
+			else { return "email not verified"; }
+		} else {
+			return "user not found";
 		}
-		return null;
 	}
 
 	@Override

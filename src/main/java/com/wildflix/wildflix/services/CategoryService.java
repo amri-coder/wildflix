@@ -1,7 +1,6 @@
 package com.wildflix.wildflix.services;
 
 import com.wildflix.wildflix.models.Category;
-import com.wildflix.wildflix.models.User;
 
 import java.util.List;
 

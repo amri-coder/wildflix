@@ -1,15 +1,12 @@
 package com.wildflix.wildflix.controllers;
 
 import com.wildflix.wildflix.models.Category;
-import com.wildflix.wildflix.models.Video;
 import com.wildflix.wildflix.services.CategoryService;
 //import com.wildflix.wildflix.services.RoleService;
 import com.wildflix.wildflix.services.UserService;
-import com.wildflix.wildflix.services.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

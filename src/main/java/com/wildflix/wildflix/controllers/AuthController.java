@@ -1,6 +1,5 @@
 package com.wildflix.wildflix.controllers;
 
-import com.wildflix.wildflix.DTOs.UserDTO;
 import com.wildflix.wildflix.enums.RoleName;
 import com.wildflix.wildflix.exceptions.JWTException;
 import com.wildflix.wildflix.exceptions.UserNotFound;
@@ -44,7 +43,6 @@ public class AuthController {
         }else{
             return new ResponseEntity<>("Une erreur est survenu !", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
     @PostMapping("/sign-up-admin")
@@ -53,23 +51,44 @@ public class AuthController {
             new ResponseEntity<>(userService.createUser(user, RoleName.ADMIN),
                     HttpStatus.CREATED);
     }
+    /*
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Map<String, String> request){
-        String response = userService.login(request.get("email"), request.get("password"));
-       if(response==null){
-           return new ResponseEntity<>(
-                   "Email ou le mot de passe sont incorrects ",
-                   HttpStatus.UNAUTHORIZED
-           );
-       }else
-        if(response.equals("-1")){
+    public ResponseEntity<?> login(@RequestBody Map<String, String> request){
+        try{
+            return new ResponseEntity<>(userService.login(request.get("email"), request.get("password")),
+                    HttpStatus.OK);
+        }catch(UserNotFound e){
+            Map<String, Object> body= new HashMap<>();
+            body.put("message", "User not Found");
             return new ResponseEntity<>(
-                    "Vous n'avez pas encore vérifié votre email ! ",
+                    body,
+                    HttpStatus.NOT_FOUND
+            );
+        }
+    }*/
+
+    @PostMapping("/login")
+    ResponseEntity<?> login(@RequestBody Map<String, String> form){
+        String response=userService.login(form.get("email"), form.get("password"));
+        Map<String, Object> body = new HashMap<>();
+
+        if (response.equals("user not found")) {
+            body.put("message","L'utilisateur n'est pas trouvé !");
+            return new ResponseEntity<>(
+                    body,
+                    HttpStatus.NOT_FOUND);
+        } else
+        if(response.equals("email not verified")) {
+            body.put("message","Vous n'avez pas encore vérifié votre e-mail ! Veuillez vérifier votre e-mail.");
+            return new ResponseEntity<>(
+                    body,
                     HttpStatus.UNAUTHORIZED
             );
-        }else{
-            return new ResponseEntity<String>(
-                   // LoginResponse.builder().jwt(response).build(),
+        } else {
+            body.put("jwt",response);
+            return new ResponseEntity<>(
+
+                    body,
                     HttpStatus.OK
             );
         }

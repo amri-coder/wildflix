@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import java.util.Map;
 import java.util.List;
-import java.util.Optional;
 
 import com.wildflix.wildflix.enums.RoleName;
 import com.wildflix.wildflix.exceptions.UserNotFound;
@@ -16,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.web.bind.annotation.*;
 
 import com.wildflix.wildflix.models.User;
 import com.wildflix.wildflix.services.UserService;
@@ -85,6 +83,16 @@ public class UserController {
 		return roles;
 	}
 
+	@GetMapping("/users/me")
+	public ResponseEntity<User> getUserMe(Authentication auth){
+		User user = userService.getUserById(((User)auth.getPrincipal()).getId());
+
+		if(user != null) {
+			return
+					new ResponseEntity<>(userService.getUserById(((User)auth.getPrincipal()).getId()), HttpStatus.OK);} else {
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
+	}
 
 	@PostMapping("/users/addVideoToFavorite")
 	public ResponseEntity<List<Video>> addVideoToFavorite(@RequestBody Map<String,Long> request, Authentication authentication){

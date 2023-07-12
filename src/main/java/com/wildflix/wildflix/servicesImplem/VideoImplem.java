@@ -3,6 +3,7 @@ package com.wildflix.wildflix.servicesImplem;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import com.wildflix.wildflix.repository.VideoRepository;
 import com.wildflix.wildflix.services.VideoService;
 
 @Service
+@Transactional
 public class VideoImplem implements VideoService{
 	
 	@Autowired
