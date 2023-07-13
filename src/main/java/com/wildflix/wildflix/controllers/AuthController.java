@@ -52,25 +52,31 @@ public class AuthController {
                     HttpStatus.CREATED);
     }
     @PostMapping("/login")
-    ResponseEntity<String> login(@RequestBody Map<String, String> form){
+    ResponseEntity<?> login(@RequestBody Map<String, String> form){
         String response=userService.login(form.get("email"), form.get("password"));
-            if (response == "user not found") {
-                return new ResponseEntity<>(
-                        "L'utilisateur n'est pas trouvé !",
-                        HttpStatus.NOT_FOUND);
-            } else
-            if(response.equals("email not verified")) {
-                return new ResponseEntity<>(
-                        "Vous n'avez pas encore vérifié votre e-mail ! Veuillez vérifier votre e-mail.",
-                        HttpStatus.UNAUTHORIZED
-                );
-            } else {
-                return new ResponseEntity<>(
-                        response,
-                        HttpStatus.OK
-                );
-            }
+        Map<String, Object> body = new HashMap<>();
+
+        if (response.equals("user not found")) {
+            body.put("message","User not found !");
+            return new ResponseEntity<>(
+                    body,
+                    HttpStatus.NOT_FOUND);
+        } else
+        if(response.equals("email not verified")) {
+            body.put("message","Email not verified ! Please verify your email");
+            return new ResponseEntity<>(
+                    body,
+                    HttpStatus.UNAUTHORIZED
+            );
+        } else {
+            body.put("jwt",response);
+            return new ResponseEntity<>(
+
+                    body,
+                    HttpStatus.OK
+            );
         }
+    }
 
     @PostMapping("/email-confirmation/{email}")
     public ResponseEntity<?> emailConfirmation(@PathVariable String email, @RequestBody Map<String, Integer> request) throws UserNotFound {

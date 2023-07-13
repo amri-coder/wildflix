@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.wildflix.wildflix.models.Category;
 import com.wildflix.wildflix.repository.CategoryRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import com.wildflix.wildflix.repository.VideoRepository;
 import com.wildflix.wildflix.services.VideoService;
 
 @Service
+@Transactional
 public class VideoImplem implements VideoService{
 
 	@Autowired
