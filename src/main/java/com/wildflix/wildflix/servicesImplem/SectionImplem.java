@@ -6,6 +6,7 @@ import com.wildflix.wildflix.models.Video;
 import com.wildflix.wildflix.repository.SectionRepository;
 import com.wildflix.wildflix.repository.VideoRepository;
 import com.wildflix.wildflix.services.SectionService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class SectionImplem implements SectionService {
 
     @Autowired

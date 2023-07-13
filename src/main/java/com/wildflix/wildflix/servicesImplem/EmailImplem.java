@@ -1,12 +1,14 @@
 package com.wildflix.wildflix.servicesImplem;
 
 import com.wildflix.wildflix.services.EmailService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class EmailImplem implements EmailService {
 
     //private final JavaMailSender emailSender;
