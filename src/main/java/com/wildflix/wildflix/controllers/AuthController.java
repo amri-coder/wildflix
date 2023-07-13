@@ -57,7 +57,7 @@ public class AuthController {
         Map<String, Object> body = new HashMap<>();
 
         if (response.equals("user not found")) {
-            body.put("message","User not found !");
+            body.put("message","L'utilisateur n");
             return new ResponseEntity<>(
                     body,
                     HttpStatus.NOT_FOUND);
