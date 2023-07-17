@@ -10,10 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 @RequestMapping("/auth")
 @RestController
@@ -25,9 +23,14 @@ public class AuthController {
 
     @PostMapping("/sign-up-user")
     public ResponseEntity<?> createUser(@RequestBody User user){
+        Optional<User> test = userService.getUserByEmail(user.getEmail());
+        Map<String, Object> body = new HashMap<>();
+        if(test.isPresent()) {
+            body.put("message", "L'email existe, veuillez vous connecter.");
+            return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+        }
         User result = userService.createUser(user, RoleName.USER);
         //result = userService.addRoleToUser(result.getEmail(), RoleName.USER);
-        Map<String, Object> body = new HashMap<>();
 
         if (result != null) {
             List<String> roles = new ArrayList<>();
