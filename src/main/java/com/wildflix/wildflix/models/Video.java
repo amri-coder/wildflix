@@ -24,10 +24,11 @@ public class Video {
 	
 	private String title;
 	private String description;
+	private String url;
 	
 	
 	private boolean isPrivate;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private Date releaseDate;
 
 	@ManyToMany(fetch = FetchType.EAGER)
