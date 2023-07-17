@@ -27,6 +27,7 @@ public class AuthController {
     public ResponseEntity<?> createUser(@RequestBody User user){
         User result = userService.createUser(user, RoleName.USER);
         //result = userService.addRoleToUser(result.getEmail(), RoleName.USER);
+        Map<String, Object> body = new HashMap<>();
 
         if (result != null) {
             List<String> roles = new ArrayList<>();
@@ -40,7 +41,8 @@ public class AuthController {
                                     .email(result.getEmail()).build(),
                             HttpStatus.CREATED);
         }else{
-            return new ResponseEntity<>("Une erreur est survenu !", HttpStatus.INTERNAL_SERVER_ERROR);
+            body.put("message", "Une erreur est survenu !");
+            return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -57,13 +59,16 @@ public class AuthController {
         Map<String, Object> body = new HashMap<>();
 
         if (response.equals("user not found")) {
-            body.put("message","L'utilisateur n");
+
+
+            body.put("message","L'utilisateur n'est pas trouvé ! Vérifiez votre adresse mail et votre mot de passe.");
+
             return new ResponseEntity<>(
                     body,
                     HttpStatus.NOT_FOUND);
         } else
         if(response.equals("email not verified")) {
-            body.put("message","Email not verified ! Please verify your email");
+            body.put("message","L'email n'est pas encore vérifié ! Veuillez consulter votre boite de reception pour vérifier votre email;");
             return new ResponseEntity<>(
                     body,
                     HttpStatus.UNAUTHORIZED
@@ -87,22 +92,22 @@ public class AuthController {
             if(userService.emailConfirmation(email, request.get("code"))) {
                 if(Boolean.valueOf(userService.emailConfirmation(email, request.get("code"))))
                 {
-                body.put("message","Code correct ! email confirmed , You will redirect to the login page");
+                body.put("message","Bravo, le code est correct ! Vous allez rediriger vers la page connexion.");
                 return new ResponseEntity<>(body, HttpStatus.OK);
                 }
                 else
                 {
-                    body.put("message","the code must be an integer !");
+                    body.put("message","Le code doit être composé de 4 chiffres !");
                     return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
                 }
             }
             else{
-                body.put("message","incorrect code, please try again !");
+                body.put("message","Désolé, le code que vous avez saisi est incorrect, veuillez saisir le bon code !");
                 return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
 
             }
         }catch (UserNotFound e){
-            body.put("message","User not found !");
+            body.put("message","L'utilisateur n'est pas trouvé !");
     return new ResponseEntity<>(
             body,
              HttpStatus.NOT_FOUND);
@@ -114,13 +119,13 @@ public class AuthController {
 
         try{
             if(userService.resetPasswordRequest(request.get("email"))){
-                body.put("message", "A reset email has been sent to you !");
+                body.put("message", "Un email vous est envoyé pour la réinitialisation.");
                 return new ResponseEntity<>(
                         body,
                         HttpStatus.OK
                 );
             }else{
-                body.put("message", "An error occurred, try again !");
+                body.put("message", "Une erreur est survenue ! Veuillez réessayer !");
                 return new ResponseEntity<>(
                         body,
                         HttpStatus.INTERNAL_SERVER_ERROR
@@ -128,7 +133,7 @@ public class AuthController {
             }
 
         }catch(UserNotFound e){
-            body.put("message", "User not found !");
+            body.put("message", "L'utilisateur n'est pas trouvé !");
             return new ResponseEntity<>(
                     body,
                     HttpStatus.NOT_FOUND
@@ -141,20 +146,20 @@ public class AuthController {
         Map<String, Object> body = new HashMap<>();
         try{
             userService.resetPassword(request.get("token"), request.get("password"));
-            body.put("message","The password has been changed");
+            body.put("message","Le mot de passe a été changé !");
             return new ResponseEntity<>(
                     body,
                     HttpStatus.OK
             );
         }catch(UserNotFound e){
-            body.put("Message", "User not found !");
+            body.put("Message", "L'utilisateur n'est pas trouvé !");
             return new ResponseEntity<>(
                     body,
                     HttpStatus.NOT_FOUND
             );
         }catch(JWTException e){
 
-            body.put("Message", "The link is invalid, try again");
+            body.put("Message", "Le lien est invalid, veuillez réessayer !");
             return new ResponseEntity<>(
                     body,
                     HttpStatus.UNAUTHORIZED
