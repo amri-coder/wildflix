@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.wildflix.wildflix.models.Category;
+import com.wildflix.wildflix.models.User;
+import com.wildflix.wildflix.repository.UserRepository;
 import com.wildflix.wildflix.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,9 @@ public class VideoController {
 
 	@Autowired
 	CategoryService categoryService;
+
+	@Autowired
+	UserRepository userRepository;
 	
 	/**
 	 * Create Video
@@ -95,4 +100,6 @@ public class VideoController {
 		return videoService.findByTitleContainingOrDescriptionContainingOrCategoriesContainingOrSectionsContaining(searchTerm,searchTerm,searchTerm);
 	}
 	 */
+
+
 }
