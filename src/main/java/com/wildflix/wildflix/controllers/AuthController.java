@@ -10,10 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 @RequestMapping("/auth")
 @RestController
@@ -75,6 +73,8 @@ public class AuthController {
             );
         } else {
             body.put("jwt",response);
+            Optional<User> user = userService.getUserByEmail(form.get("email"));
+            body.put("user",user);
             return new ResponseEntity<>(
 
                     body,
