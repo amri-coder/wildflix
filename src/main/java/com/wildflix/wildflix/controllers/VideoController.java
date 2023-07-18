@@ -49,14 +49,13 @@ public class VideoController {
 	 * @param id
 	 * @return
 	 */
-	@GetMapping("/videos/{id}")
-	public ResponseEntity<Video> getVideoById(@PathVariable Long id, Authentication auth){
-		Video result = videoService.getVideoById(id, auth!=null);
-		if(result != null) {
-			return new ResponseEntity<>(result,HttpStatus.OK);
-		}else {
+	@GetMapping("/videosCatégorie/{ids}")
+	public ResponseEntity<List<Video>> getVideosByCategories(@PathVariable List<Long> ids){
+		List<Video> results = videoService.getVideosByCategories(ids);
+		if (results.isEmpty()) {
 			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
+		return new ResponseEntity<>(results, HttpStatus.OK);
 	}
 	/**
 	 * Delete Video By ID

@@ -54,6 +54,32 @@ public class VideoImplem implements VideoService{
 			}
 		 return null;
 	}
+
+	@Override
+	public List<Video> getVideosByIds(List<Long> ids, boolean loggedIn){
+		List<Video> videos = new ArrayList<>();
+		for (Long id : ids) {
+			Optional<Video> video = videoRepository.findById(id);
+			if (video.isPresent()) {
+				if (video.get().isPrivate()) {
+					if (loggedIn) {
+						videos.add(video.get());
+					}
+				} else {
+					videos.add(video.get());
+				}
+			}
+		}
+		return videos;
+	}
+	@Override
+	public List<Video> getVideosByCategories(List<Long> ids) {
+		List<Video> result = new ArrayList<>();
+		for (Long id : ids) {
+			result.addAll(videoRepository.findByCategoryId(id));
+		}
+		return result;
+	}
 	@Override
 	public void deleteVideoById(Long id, boolean loggedIn) {
 		videoRepository.deleteById(id);
@@ -88,6 +114,8 @@ public class VideoImplem implements VideoService{
 	public List<Video> getVideoByCategory(Long id){
 		return videoRepository.findByCategoryId(id);
 	}
+
+
 
 /*
 	@Override
