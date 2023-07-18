@@ -78,6 +78,8 @@ public class AuthController {
             );
         } else {
             body.put("jwt",response);
+            Optional<User> user = userService.getUserByEmail(form.get("email"));
+            body.put("user",user);
             return new ResponseEntity<>(
 
                     body,
