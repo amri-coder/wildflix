@@ -59,7 +59,10 @@ public class AuthController {
         Map<String, Object> body = new HashMap<>();
 
         if (response.equals("user not found")) {
+
+
             body.put("message","L'utilisateur n'est pas trouvé ! Vérifiez votre adresse mail et votre mot de passe.");
+
             return new ResponseEntity<>(
                     body,
                     HttpStatus.NOT_FOUND);

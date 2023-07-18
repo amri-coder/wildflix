@@ -82,8 +82,6 @@ public class UserController {
 		}
 	}
 
-	// A vérifier avec Billel
-
 	//Quand l'utilisateur modifie ses informations lui même
 	@PutMapping("/users")
 	public ResponseEntity<?> userModifyUser(Authentication auth, @RequestBody User modifiedUser){
@@ -136,7 +134,7 @@ public class UserController {
 		}
 	}
 
-	// A vérifier avec billel
+
 	@PostMapping("/users/removeVideoFromFavorite")
 	public ResponseEntity<List<Video>> removeVideoFromFavorite(@RequestBody Map<String, Long> request, Authentication authentication){
 		try {
