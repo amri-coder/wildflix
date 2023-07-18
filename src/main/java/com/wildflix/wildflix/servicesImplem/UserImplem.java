@@ -123,7 +123,6 @@ public class UserImplem implements UserService{
 			}
 	}
 
-	// A vérifier avec billel
 	@Override
 	public List<Video> removeVideoFromFavorite(String email, Long videoId) throws UserNotFound, VideoNotFoundException {
 		Optional<User> user = userRepository.findByEmail(email);
