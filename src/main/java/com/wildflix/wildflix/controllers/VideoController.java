@@ -1,5 +1,7 @@
 package com.wildflix.wildflix.controllers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,9 +41,12 @@ public class VideoController {
 	 * @return
 	 */
 	@GetMapping("/videos")
-	public ResponseEntity<List<Video>> getAllVideos(Authentication auth){
+	public ResponseEntity<?> getAllVideos(Authentication auth){
+		Map<String, List<Video>> body = new HashMap();
+		List<Video> videos = videoService.getAllVideos(auth!=null);
+		body.put("videos",videos);
 		return
-				new ResponseEntity<>(videoService.getAllVideos(auth!=null),
+				new ResponseEntity<>(body,
 						HttpStatus.OK);
 	}
 	/**
